@@ -1,0 +1,4 @@
+Lege die Bilddateien der Werke in diesen Ordner.
+
+Trage den relativen Pfad anschließend in werke.json ein, zum Beispiel:
+"bild": "bilder/morgenrot-im-revier.jpg"
