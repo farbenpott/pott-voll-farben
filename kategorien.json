@@ -1,0 +1,9 @@
+[
+  { "name": "Akt", "bild": "bilder/Grüne_Frau.jpg" },
+  { "name": "Tiere", "bild": "bilder/Der_Ara.jpg" },
+  { "name": "Ruhrpott", "bild": "bilder/Bergmann.jpg" },
+  { "name": "Blumen", "bild": "bilder/Der_Ara.jpg" },
+  { "name": "Porträts", "bild": "bilder/Comic.jpg" },
+  { "name": "Abstrakt", "bild": "bilder/Bunt.jpg" },
+  { "name": "Natur", "bild": "bilder/Die_Frau_im_Wald.jpg" }
+]

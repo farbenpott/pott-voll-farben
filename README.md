@@ -1,4 +1,17 @@
-# Werke zur Galerie hinzufügen
+# Werke und Kategorien der Galerie bearbeiten
+
+## Kategorien konfigurieren
+
+Öffne `kategorien.json`. Jede Kategorie hat einen Namen und den Pfad zu einem Bild im Projektordner:
+
+```json
+[
+  { "name": "Tiere", "bild": "bilder/Der_Ara.jpg" },
+  { "name": "Ruhrpott", "bild": "bilder/Bergmann.jpg" }
+]
+```
+
+Passe `name` und `bild` an oder füge weitere Einträge hinzu. Das Bild wird als Hintergrund der Kategorie-Karte verwendet. Lege neue Bilder in `bilder` ab. Wenn `bild` leer bleibt oder fehlt, erscheint die Karte ohne Bild. Verwende für die Anführungszeichen normale doppelte JSON-Anführungszeichen und trenne Einträge mit Kommas.
 
 ## 1. Bild ablegen
 
@@ -22,7 +35,7 @@ Speichere das Bild im Ordner `bilder`. Verwende am besten einen kurzen Dateiname
 ```
 
 - `bild`: Pfad zur Bilddatei. Ohne Bildpfad zeigt die Website eine Beispielillustration.
-- `themen`: Eine oder mehrere Themen aus `Akt`, `Tiere`, `Ruhrpott`, `Blumen`, `Porträts`, `Abstrakt` und `Natur`. Neue Themen werden ebenfalls automatisch als Filter und Themenkarte angezeigt.
+- `themen`: Eine oder mehrere Kategorien aus `kategorien.json`. Schreibweise und Name müssen übereinstimmen. Kategorien werden dort verwaltet und erscheinen als Filter und Themenkarte.
 - `material`: Zum Beispiel `Öl`, `Acryl`, `Bleistift`, `Aquarell` oder `Mischtechnik`. Neue Materialien erscheinen ebenfalls automatisch als Filter.
 - `jahr`, `groesse` und `preis` sind optional.
 - `format`: `hochkant`, `querformat`, `quadratisch` oder `rund`. Bei normalen Fotos richtet sich die Darstellung ansonsten nach dem Bildformat.
@@ -37,4 +50,4 @@ Die Galerie lädt `werke.json` nach, deshalb funktioniert die Vorschau nicht zuv
 py -m http.server 8000
 ```
 
-Öffne anschließend `http://localhost:8000` im Browser. Zum Beenden des Servers im Terminal `Strg+C` drücken. Auf einem Webserver wird `werke.json` automatisch mitgeladen.
+Öffne anschließend `http://localhost:8000` im Browser. Zum Beenden des Servers im Terminal `Strg+C` drücken. Die Galerie lädt `werke.json` und `kategorien.json` automatisch mit.

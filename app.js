@@ -1,4 +1,3 @@
-const defaultThemes = ['Akt', 'Tiere', 'Ruhrpott', 'Blumen', 'Porträts', 'Abstrakt', 'Natur'];
 const defaultMaterials = ['Öl', 'Acryl', 'Bleistift', 'Aquarell', 'Mischtechnik'];
 const palettes = {
   city: ['#e9b05f', '#e27b50', '#566f64', '#283d3d'],
@@ -20,6 +19,7 @@ const themeFilters = $('#theme-filters');
 const mediumFilters = $('#medium-filters');
 const grid = $('#art-grid');
 let artworks = [];
+let categories = [];
 let activeTheme = new URLSearchParams(location.search).get('thema') || 'Alle';
 let activeMedium = 'Alle';
 
@@ -64,7 +64,7 @@ function svgArt(kind = 'abstract', format = 'quadratisch') {
 }
 
 function getThemes() {
-  return [...new Set([...defaultThemes, ...artworks.flatMap(work => work.themen || [])])];
+  return categories.map(category => category.name);
 }
 
 function getMaterials() {
@@ -95,10 +95,10 @@ function render() {
     (activeMedium === 'Alle' || work.material === activeMedium)
   );
 
-  $('#gallery-title').innerHTML = activeTheme === 'Alle' ? 'Kunst, ganz <em>vielseitig.</em>' : `${escapeHtml(activeTheme)}, ganz <em>persönlich.</em>`;
+  $('#gallery-title').innerHTML = activeTheme === 'Alle' ? 'Alle Werke' : `Kategorie: <em>${escapeHtml(activeTheme)}</em>`;
   $('#gallery-note').innerHTML = activeTheme === 'Alle'
-    ? 'Jedes Werk ein kleines Stück Gefühl.<br>Such dir deinen Lieblingsmoment.'
-    : `Entdecke alle Werke zum Thema ${escapeHtml(activeTheme)}.<br>Filtere nach deinem Lieblingsmaterial.`;
+    ? 'Gemälde aus dem Atelier.'
+    : `Werke der Kategorie ${escapeHtml(activeTheme)}.`;
   $('#result-count').textContent = `${visible.length} ${visible.length === 1 ? 'WERK' : 'WERKE'}`;
   $('#active-theme').hidden = activeTheme === 'Alle';
   $('#active-theme-label').textContent = `Thema: ${activeTheme}`;
@@ -130,29 +130,33 @@ function setTheme(theme) {
 function openModal(work) {
   if (!work) return;
   const topics = escapeHtml((work.themen || []).join(' · '));
-  $('#modal-content').innerHTML = `<div class="modal-art ${work.format === 'rund' ? 'rund' : ''}">${imageMarkup(work)}</div><div class="modal-copy"><p class="eyebrow">${topics} · ${escapeHtml(work.material || '')}</p><h2>${escapeHtml(work.title)}</h2><p class="details">Originalgemälde, liebevoll von Hand gefertigt.<br>${escapeHtml(work.jahr || '')}${work.groesse ? ` &nbsp;·&nbsp; ${escapeHtml(work.groesse)}` : ''}<br><br>Jedes Bild ist ein echtes Unikat und bringt ein Stück Farbe und Persönlichkeit in dein Zuhause.</p>${work.preis ? `<p class="price">${escapeHtml(work.preis)}</p>` : ''}<a href="mailto:hallo@pottvollfarben.de?subject=${encodeURIComponent(`Anfrage: ${work.title}`)}">Interesse? Schreib mir ↗</a></div>`;
+  $('#modal-content').innerHTML = `<div class="modal-art ${work.format === 'rund' ? 'rund' : ''}">${imageMarkup(work)}</div><div class="modal-copy"><p class="eyebrow">${topics} · ${escapeHtml(work.material || '')}</p><h2>${escapeHtml(work.title)}</h2><p class="details">Originalgemälde<br>${escapeHtml(work.jahr || '')}${work.groesse ? ` &nbsp;·&nbsp; ${escapeHtml(work.groesse)}` : ''}</p>${work.preis ? `<p class="price">${escapeHtml(work.preis)}</p>` : ''}<a href="mailto:c.marczian@outlook.de?subject=${encodeURIComponent(`Anfrage: ${work.title}`)}">Frage zum Werk ↗</a></div>`;
   $('#art-modal').showModal();
 }
 
 function renderThemeCards() {
-  const icons = { Akt: '◒', Tiere: '♧', Ruhrpott: '⌂', Blumen: '✿', Porträts: '◉', Abstrakt: '✳', Natur: '❋' };
-  $('#theme-cards').innerHTML = getThemes().map(theme => {
+  $('#theme-cards').innerHTML = categories.map(category => {
+    const theme = category.name;
     const count = artworks.filter(work => (work.themen || []).includes(theme)).length;
-    return `<a class="theme-card" href="?thema=${encodeURIComponent(theme)}#galerie"><span class="theme-illustration">${icons[theme] || '✳'}</span><span class="theme-arrow">↗</span><div><h3>${escapeHtml(theme)}</h3><span>${count} WERKE ENTDECKEN</span></div></a>`;
+    return `<a class="theme-card" href="?thema=${encodeURIComponent(theme)}#galerie">${category.bild ? `<img class="theme-image" src="${escapeHtml(category.bild)}" alt="" loading="lazy">` : ''}<span class="theme-arrow" aria-hidden="true">↗</span><div><h3>${escapeHtml(theme)}</h3><span>${count} ${count === 1 ? 'WERK' : 'WERKE'}</span></div></a>`;
   }).join('');
 }
 
 async function loadArtworks() {
   try {
-    const response = await fetch('./werke.json');
-    if (!response.ok) throw new Error(`werke.json konnte nicht geladen werden (${response.status}).`);
-    const data = await response.json();
-    if (!Array.isArray(data)) throw new Error('werke.json muss eine Liste von Werken enthalten.');
-    artworks = data;
+    const [worksResponse, categoriesResponse] = await Promise.all([fetch('./werke.json'), fetch('./kategorien.json')]);
+    if (!worksResponse.ok) throw new Error(`werke.json konnte nicht geladen werden (${worksResponse.status}).`);
+    if (!categoriesResponse.ok) throw new Error(`kategorien.json konnte nicht geladen werden (${categoriesResponse.status}).`);
+    const [worksData, categoriesData] = await Promise.all([worksResponse.json(), categoriesResponse.json()]);
+    if (!Array.isArray(worksData)) throw new Error('werke.json muss eine Liste von Werken enthalten.');
+    if (!Array.isArray(categoriesData) || categoriesData.some(category => !category.name)) throw new Error('kategorien.json muss eine Liste von Kategorien mit name enthalten.');
+    artworks = worksData;
+    categories = categoriesData;
   } catch (error) {
     console.error(error);
-    $('#gallery-note').textContent = 'Die Werke konnten nicht geladen werden. Starte die Website über einen lokalen Webserver.';
+    $('#gallery-note').textContent = 'Die Galerie konnte nicht geladen werden. Starte die Website über einen lokalen Webserver.';
     artworks = [];
+    categories = [];
   }
   if (!getThemes().includes(activeTheme)) activeTheme = 'Alle';
   renderThemeCards();

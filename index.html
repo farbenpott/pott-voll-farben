@@ -4,11 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f7f5ef" />
-  <meta name="description" content="Eine Galerie voller Farbe, Gefühl und Ruhrpottseele." />
-  <title>Pottvoll Farben — Kunst, die bleibt</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="Originalgemälde von Pottvoll Farben aus dem Ruhrgebiet." />
+  <title>Pottvoll Farben — Originalgemälde</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -21,60 +18,51 @@
     <nav class="main-nav" aria-label="Hauptnavigation">
       <a href="#galerie">Galerie</a><a href="#themen">Themen</a><a href="#ueber">Über mich</a>
     </nav>
-    <a class="contact-link" href="mailto:hallo@pottvollfarben.de">Kontakt <span>↗</span></a>
+    <a class="contact-link" href="mailto:c.marczian@outlook.de">Kontakt <span>↗</span></a>
     <button class="menu-toggle" aria-label="Menü öffnen" aria-expanded="false"><span></span><span></span></button>
   </header>
 
   <main id="app">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="eyebrow-dot"></span> Kunst aus’m Revier · mit Herz gemacht</p>
-        <h1>Ein bisschen<br><em>Farbe. Viel</em><br>Gefühl.</h1>
-        <p class="hero-text">Bilder, die Geschichten erzählen — vom Ruhrpott, vom Leben und von all den kleinen Dingen dazwischen.</p>
+        <p class="eyebrow"><span class="eyebrow-dot"></span> Originalgemälde</p>
+        <h1>Kunst aus’m<br><em>Ruhrgebiet.</em></h1>
         <a class="round-link" href="#galerie"><span>Galerie entdecken</span><b>↓</b></a>
       </div>
       <div class="hero-art" aria-label="Abstrakte bunte Kunstwerke">
         <div class="hero-sun"></div>
         <div class="hero-paint paint-a"></div><div class="hero-paint paint-b"></div><div class="hero-paint paint-c"></div>
         <div class="hero-frame"><div class="hero-artwork"><div class="art-sky"></div><div class="art-hill"></div><div class="art-flower flower-one">✿</div><div class="art-flower flower-two">✿</div></div></div>
-        <span class="hero-caption">Farbe im Kopf,<br>Ruhrpott im Herzen.</span>
-        <span class="hero-index">01 — 06</span>
         <div class="scribble" aria-hidden="true">✳</div>
       </div>
-      <div class="hero-bottom"><span>Originale mit Charakter</span><span class="line"></span><span>Made in Ruhrgebiet</span></div>
-    </section>
-
-    <section class="intro-strip" id="ueber">
-      <p>Schön, dass du da bist.</p><span class="intro-star">✳</span>
-      <p>Hier trifft <em>Leinwand</em> auf Leben — mal laut, mal leise, immer echt.</p>
     </section>
 
     <section class="gallery-section" id="galerie">
       <div class="section-heading">
-        <div><p class="eyebrow">Einblicke ins Atelier</p><h2 id="gallery-title">Kunst, ganz <em>vielseitig.</em></h2></div>
-        <p class="section-note" id="gallery-note">Jedes Werk ein kleines Stück Gefühl.<br>Such dir deinen Lieblingsmoment.</p>
+        <div><p class="eyebrow">Galerie</p><h2 id="gallery-title">Alle Werke</h2></div>
+        <p class="section-note" id="gallery-note">Originale aus dem Atelier.</p>
       </div>
       <div class="filter-area">
         <div class="filter-row"><span class="filter-label">THEMA</span><div class="filter-buttons" id="theme-filters"></div></div>
         <div class="filter-row"><span class="filter-label">MATERIAL</span><div class="filter-buttons" id="medium-filters"></div></div>
       </div>
       <div class="active-theme" id="active-theme" hidden><span id="active-theme-label"></span><button id="clear-theme" aria-label="Themenfilter entfernen">×</button></div>
-      <div class="result-line"><span id="result-count"></span><span>Alle Werke sind Unikate <i>✳</i></span></div>
+      <div class="result-line"><span id="result-count"></span><span>Originale</span></div>
       <div class="art-grid" id="art-grid"></div>
-      <div class="empty-state" id="empty-state" hidden><span>✳</span><p>Hier ist noch Platz für neue Farben.</p><button id="reset-filters">Alle Werke ansehen</button></div>
+      <div class="empty-state" id="empty-state" hidden><span>—</span><p>Keine Werke in dieser Auswahl.</p><button id="reset-filters">Alle Werke ansehen</button></div>
     </section>
 
     <section class="themes-section" id="themen">
-      <div class="section-heading themes-heading"><div><p class="eyebrow">Stöbern & entdecken</p><h2>Was spricht dich <em>an?</em></h2></div><p class="section-note">Jede Kategorie hat ihren<br>ganz eigenen kleinen Kosmos.</p></div>
+      <div class="section-heading themes-heading"><div><p class="eyebrow">Themen</p><h2>Kategorien</h2></div></div>
       <div class="theme-cards" id="theme-cards"></div>
     </section>
 
-    <section class="about-band">
-      <div class="about-mark">✳</div><div><p class="eyebrow">Von hier. Für überall.</p><h2>Mit Liebe gemalt.<br><em>Mit Freude geteilt.</em></h2></div><a href="mailto:hallo@pottvollfarben.de" class="about-cta">Lass uns schnacken <span>↗</span></a>
+    <section class="about-band" id="ueber">
+      <div class="about-mark">✳</div><div><p class="eyebrow">Pottvoll Farben</p><h2>Kunst aus dem<br><em>Ruhrgebiet.</em></h2></div><a href="mailto:c.marczian@outlook.de" class="about-cta">Kontakt <span>↗</span></a>
     </section>
   </main>
 
-  <footer class="site-footer"><a class="brand" href="index.html"><span class="brand-mark"><i></i><i></i><i></i></span><span>POTTVOLL <b>FARBEN</b></span></a><p>© <span id="year"></span> Pottvoll Farben · Mit Liebe aus’m Pott.</p><div><a href="mailto:hallo@pottvollfarben.de">Kontakt</a><a href="#impressum">Impressum</a></div></footer>
+  <footer class="site-footer"><a class="brand" href="index.html"><span class="brand-mark"><i></i><i></i><i></i></span><span>POTTVOLL <b>FARBEN</b></span></a><p>© <span id="year"></span> Pottvoll Farben</p><div><a href="mailto:c.marczian@outlook.de">Kontakt</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div></footer>
   <dialog class="art-modal" id="art-modal"><button class="modal-close" aria-label="Schließen">×</button><div class="modal-content" id="modal-content"></div></dialog>
   <script src="app.js"></script>
 </body>
