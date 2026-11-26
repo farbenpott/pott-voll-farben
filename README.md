@@ -29,7 +29,6 @@ Speichere das Bild im Ordner `bilder`. Verwende am besten einen kurzen Dateiname
   "material": "Acryl",
   "jahr": 2025,
   "groesse": "50 × 70 cm",
-  "preis": "320 €",
   "format": "hochkant"
 }
 ```
@@ -37,7 +36,7 @@ Speichere das Bild im Ordner `bilder`. Verwende am besten einen kurzen Dateiname
 - `bild`: Pfad zur Bilddatei. Ohne Bildpfad zeigt die Website eine Beispielillustration.
 - `themen`: Eine oder mehrere Kategorien aus `kategorien.json`. Schreibweise und Name müssen übereinstimmen. Kategorien werden dort verwaltet und erscheinen als Filter und Themenkarte.
 - `material`: Zum Beispiel `Öl`, `Acryl`, `Bleistift`, `Aquarell` oder `Mischtechnik`. Neue Materialien erscheinen ebenfalls automatisch als Filter.
-- `jahr`, `groesse` und `preis` sind optional.
+- `jahr` und `groesse` sind optional.
 - `format`: `hochkant`, `querformat`, `quadratisch` oder `rund`. Bei normalen Fotos richtet sich die Darstellung ansonsten nach dem Bildformat.
 
 Zwischen zwei Werk-Einträgen steht ein Komma. Hinter dem letzten Eintrag darf kein Komma stehen. Die Anführungszeichen müssen normale doppelte JSON-Anführungszeichen sein.

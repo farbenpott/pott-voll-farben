@@ -18,8 +18,10 @@ const $ = selector => document.querySelector(selector);
 const themeFilters = $('#theme-filters');
 const mediumFilters = $('#medium-filters');
 const grid = $('#art-grid');
+const pageSize = 12;
 let artworks = [];
 let categories = [];
+let currentPage = 1;
 let activeTheme = new URLSearchParams(location.search).get('thema') || 'Alle';
 let activeMedium = 'Alle';
 
@@ -77,7 +79,7 @@ function renderFilters() {
   themeFilters.innerHTML = themes.map(theme => `<button class="filter-btn ${theme === activeTheme ? 'active' : ''}" data-theme="${escapeHtml(theme)}">${escapeHtml(theme)}</button>`).join('');
   mediumFilters.innerHTML = materials.map(material => `<button class="filter-btn ${material === activeMedium ? 'active' : ''}" data-medium="${escapeHtml(material)}">${escapeHtml(material)}</button>`).join('');
   themeFilters.querySelectorAll('button').forEach(button => button.onclick = () => setTheme(button.dataset.theme));
-  mediumFilters.querySelectorAll('button').forEach(button => button.onclick = () => { activeMedium = button.dataset.medium; render(); });
+  mediumFilters.querySelectorAll('button').forEach(button => button.onclick = () => { activeMedium = button.dataset.medium; currentPage = 1; render(); });
 }
 
 function imageMarkup(work, modal = false) {
@@ -94,6 +96,9 @@ function render() {
     (activeTheme === 'Alle' || (work.themen || []).includes(activeTheme)) &&
     (activeMedium === 'Alle' || work.material === activeMedium)
   );
+  const pageCount = Math.ceil(visible.length / pageSize);
+  currentPage = Math.min(currentPage, Math.max(pageCount, 1));
+  const pageWorks = visible.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   $('#gallery-title').innerHTML = activeTheme === 'Alle' ? 'Alle Werke' : `Kategorie: <em>${escapeHtml(activeTheme)}</em>`;
   $('#gallery-note').innerHTML = activeTheme === 'Alle'
@@ -104,8 +109,13 @@ function render() {
   $('#active-theme-label').textContent = `Thema: ${activeTheme}`;
   grid.hidden = !visible.length;
   $('#empty-state').hidden = !!visible.length;
+  const pagination = $('#pagination');
+  pagination.hidden = pageCount <= 1;
+  $('#page-status').textContent = `Seite ${currentPage} von ${pageCount}`;
+  $('#page-previous').disabled = currentPage <= 1;
+  $('#page-next').disabled = currentPage >= pageCount;
 
-  grid.innerHTML = visible.map((work, index) => {
+  grid.innerHTML = pageWorks.map((work, index) => {
     const title = escapeHtml(work.title);
     const topics = escapeHtml((work.themen || []).join(' · '));
     const formatClass = ['rund', 'quadratisch', 'hochkant', 'querformat'].includes(work.format) ? work.format : '';
@@ -113,12 +123,13 @@ function render() {
   }).join('');
 
   grid.querySelectorAll('.art-card').forEach(card => {
-    card.onclick = () => openModal(visible.find(work => work.title === card.dataset.title));
+    card.onclick = () => openModal(pageWorks.find(work => work.title === card.dataset.title));
   });
 }
 
 function setTheme(theme) {
   activeTheme = theme;
+  currentPage = 1;
   const url = new URL(location.href);
   if (theme === 'Alle') url.searchParams.delete('thema');
   else url.searchParams.set('thema', theme);
@@ -130,7 +141,7 @@ function setTheme(theme) {
 function openModal(work) {
   if (!work) return;
   const topics = escapeHtml((work.themen || []).join(' · '));
-  $('#modal-content').innerHTML = `<div class="modal-art ${work.format === 'rund' ? 'rund' : ''}">${imageMarkup(work)}</div><div class="modal-copy"><p class="eyebrow">${topics} · ${escapeHtml(work.material || '')}</p><h2>${escapeHtml(work.title)}</h2><p class="details">Originalgemälde<br>${escapeHtml(work.jahr || '')}${work.groesse ? ` &nbsp;·&nbsp; ${escapeHtml(work.groesse)}` : ''}</p>${work.preis ? `<p class="price">${escapeHtml(work.preis)}</p>` : ''}<a href="mailto:c.marczian@outlook.de?subject=${encodeURIComponent(`Anfrage: ${work.title}`)}">Frage zum Werk ↗</a></div>`;
+  $('#modal-content').innerHTML = `<div class="modal-art ${work.format === 'rund' ? 'rund' : ''}">${imageMarkup(work)}</div><div class="modal-copy"><p class="eyebrow">${topics} · ${escapeHtml(work.material || '')}</p><h2>${escapeHtml(work.title)}</h2><p class="details">Originalgemälde<br>${escapeHtml(work.jahr || '')}${work.groesse ? ` &nbsp;·&nbsp; ${escapeHtml(work.groesse)}` : ''}</p><a href="mailto:c.marczian@outlook.de?subject=${encodeURIComponent(`Anfrage: ${work.title}`)}">Frage zum Werk ↗</a></div>`;
   $('#art-modal').showModal();
 }
 
@@ -164,12 +175,15 @@ async function loadArtworks() {
 }
 
 $('#clear-theme').onclick = () => setTheme('Alle');
+$('#page-previous').onclick = () => { currentPage -= 1; render(); $('#galerie').scrollIntoView({ behavior: 'smooth' }); };
+$('#page-next').onclick = () => { currentPage += 1; render(); $('#galerie').scrollIntoView({ behavior: 'smooth' }); };
 $('#reset-filters').onclick = () => { activeMedium = 'Alle'; setTheme('Alle'); };
 $('#art-modal').addEventListener('click', event => { if (event.target.id === 'art-modal') $('#art-modal').close(); });
 $('.modal-close').onclick = () => $('#art-modal').close();
 window.addEventListener('popstate', () => {
   activeTheme = new URLSearchParams(location.search).get('thema') || 'Alle';
   activeMedium = 'Alle';
+  currentPage = 1;
   render();
 });
 $('.menu-toggle').onclick = event => {

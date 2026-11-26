@@ -29,12 +29,7 @@
         <h1>Kunst aus’m<br><em>Ruhrgebiet.</em></h1>
         <a class="round-link" href="#galerie"><span>Galerie entdecken</span><b>↓</b></a>
       </div>
-      <div class="hero-art" aria-label="Abstrakte bunte Kunstwerke">
-        <div class="hero-sun"></div>
-        <div class="hero-paint paint-a"></div><div class="hero-paint paint-b"></div><div class="hero-paint paint-c"></div>
-        <div class="hero-frame"><div class="hero-artwork"><div class="art-sky"></div><div class="art-hill"></div><div class="art-flower flower-one">✿</div><div class="art-flower flower-two">✿</div></div></div>
-        <div class="scribble" aria-hidden="true">✳</div>
-      </div>
+      <div class="hero-art"><img class="hero-banner" src="banner/me.jpg" alt="Porträt der Künstlerin" /></div>
     </section>
 
     <section class="gallery-section" id="galerie">
@@ -49,6 +44,11 @@
       <div class="active-theme" id="active-theme" hidden><span id="active-theme-label"></span><button id="clear-theme" aria-label="Themenfilter entfernen">×</button></div>
       <div class="result-line"><span id="result-count"></span><span>Originale</span></div>
       <div class="art-grid" id="art-grid"></div>
+      <nav class="pagination" id="pagination" aria-label="Galerie-Seiten" hidden>
+        <button type="button" id="page-previous" aria-label="Vorherige Seite">←</button>
+        <span id="page-status" aria-live="polite"></span>
+        <button type="button" id="page-next" aria-label="Nächste Seite">→</button>
+      </nav>
       <div class="empty-state" id="empty-state" hidden><span>—</span><p>Keine Werke in dieser Auswahl.</p><button id="reset-filters">Alle Werke ansehen</button></div>
     </section>
 
