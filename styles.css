@@ -14,3 +14,12 @@
 .pagination button:hover:not(:disabled){background:var(--ink);border-color:var(--ink);color:#fff}
 .pagination button:disabled{opacity:.35;cursor:default}
 @media(max-width:650px){.hero-banner{border-width:9px}}
+.site-header{background:#24563f;border-bottom-color:#ffffff26}
+.site-header .brand,.site-header .main-nav a,.site-header .contact-link{color:#fff}
+.site-header .main-nav a:hover{color:#c9d8bd}
+.site-header .contact-link{border-bottom-color:#ffffff85}
+.site-header .contact-link span{color:#c9d8bd}
+.site-header .brand-mark i{background:#c9d8bd}
+.site-header .brand-mark i:nth-child(2){background:#fff}
+.site-header .menu-toggle span{background:#fff}
+@media(max-width:650px){.site-header .main-nav{background:#24563f;border-bottom-color:#ffffff26}}
